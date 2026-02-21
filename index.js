@@ -8,17 +8,32 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+// עדכון ה-CORS כדי שיאפשר לאתר שלך ב-Render לעבוד
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "http://127.0.0.1:5174"],
+  origin: "*", // מאפשר לכל כתובת לגשת (הכי בטוח להגשה כדי שלא ייחסם למרצה)
   credentials: true
 }));
 
 // --- 1. חיבור ל-Redis ---
-const redis = createClient({ url: process.env.REDIS_URL || 'redis://localhost:6379' });
-redis.on("error", (err) => console.error("❌ Redis Error:", err));
-await redis.connect();
+const redis = createClient({ 
+  url: process.env.REDIS_URL || 'redis://localhost:6379' 
+});
 
-// --- 2. מפתחות קבועים (למניעת טעויות כתיב) ---
+redis.on("error", (err) => console.error("❌ Redis Error:", err));
+
+// פתרון לבעיית ה-Await בראש הקובץ ב-Render
+async function connectRedis() {
+  try {
+    await redis.connect();
+    console.log("✅ Connected to Redis successfully");
+  } catch (err) {
+    console.error("❌ Failed to connect to Redis:", err);
+  }
+}
+connectRedis();
+
+// --- 2. מפתחות קבועים ---
 const ADMIN_ALL_KEY = "admin:all_appointments";
 const apptKey = (id) => `appointment:${id}`;
 const slotKey = (date, time) => `slot:${date}:${time}`;
@@ -26,7 +41,7 @@ const phoneIndexKey = (phone) => `appointmentsByPhone:${phone}`;
 const dayIndexKey = (date) => `appointments:${date}`;
 const normPhone = (p = "") => String(p).replace(/\D/g, "");
 
-// --- 3. לוגיקת זמנים (שישי/שבת) ---
+// --- 3. לוגיקת זמנים ---
 const getSlotsForDate = (dateStr) => {
   const [year, month, day] = dateStr.split("-").map(Number);
   const d = new Date(year, month - 1, day); 
@@ -44,82 +59,65 @@ const getSlotsForDate = (dateStr) => {
 
 // --- 4. ראוטים ---
 
-// 🔍 נתיב בדיקת מעבדה - פתחי אותו בדפדפן: http://localhost:3001/api/debug
 app.get("/api/debug", async (req, res) => {
-  const allIds = await redis.sMembers(ADMIN_ALL_KEY);
-  const sample = allIds.length > 0 ? await redis.get(apptKey(allIds[0])) : "No data";
-  res.json({
-    connected: redis.isOpen,
-    total_appointments_in_index: allIds.length,
-    ids: allIds,
-    first_sample: sample
-  });
+  try {
+    const allIds = await redis.sMembers(ADMIN_ALL_KEY);
+    res.json({
+      connected: redis.isOpen,
+      total_appointments: allIds.length,
+      status: "Server is UP"
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
-// קבלת שעות פנויות
 app.get("/api/availability", async (req, res) => {
   const { date } = req.query;
+  if (!date) return res.json({ available: [] });
   const slots = getSlotsForDate(date);
   const existsArr = await Promise.all(slots.map(t => redis.exists(slotKey(date, t))));
   const available = slots.filter((_, i) => existsArr[i] === 0);
   res.json({ available });
 });
 
-// ראוט מנהל - שליפת הכל
 app.get("/api/admin/appointments", async (req, res) => {
   try {
-    const { date } = req.query; // התאריך שנשלח מהדפדפן
-    console.log(`--- שליפת תורים לתאריך: ${date} ---`);
+    const { date } = req.query;
+    if (!date) return res.status(400).json({ error: "Date is required" });
 
-    if (!date) {
-      return res.status(400).json({ error: "Date is required" });
-    }
-
-    // שליפת ה-IDs של התורים ששייכים רק לתאריך הזה
     const ids = await redis.sMembers(`appointments:${date}`);
-    console.log(`נמצאו ${ids.length} תורים ב-Redis`);
+    if (ids.length === 0) return res.json({ appointments: [] });
 
-    if (ids.length === 0) {
-      return res.json({ appointments: [] });
-    }
-
-    // משיכת המידע המלא עבור כל ID שמצאנו
     const rawArr = await Promise.all(ids.map(id => redis.get(`appointment:${id}`)));
     const appointments = rawArr.filter(Boolean).map(JSON.parse);
-    
-    // מיון לפי שעה
     appointments.sort((a, b) => a.time.localeCompare(b.time));
 
     res.json({ appointments });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// קביעת תור חדש
 app.post("/api/appointments", async (req, res) => {
   const { date, time, name, phone, service } = req.body;
   const id = nanoid(8);
   const phoneNorm = normPhone(phone);
   const appt = { id, date, time, name, phone: phoneNorm, service };
 
-  // שמירה עם נעילת NX למניעת כפילות
   const acquired = await redis.set(slotKey(date, time), id, { NX: true, EX: 2592000 });
   if (!acquired) return res.status(409).json({ error: "Slot taken" });
 
   await redis.set(apptKey(id), JSON.stringify(appt));
-  await redis.sAdd(ADMIN_ALL_KEY, id); // רישום לאינדקס הכללי
+  await redis.sAdd(ADMIN_ALL_KEY, id);
   await redis.sAdd(phoneIndexKey(phoneNorm), id);
   await redis.sAdd(dayIndexKey(date), id);
 
-  console.log(`🚀 תור חדש נרשם בהצלחה! ID: ${id}`);
   res.json(appt);
 });
 
-// ביטול תור
 app.post("/api/cancel", async (req, res) => {
-  const { id, isAdmin } = req.body;
+  const { id } = req.body;
   const raw = await redis.get(apptKey(id));
   if (!raw) return res.status(404).json({ error: "Not found" });
   const appt = JSON.parse(raw);
@@ -127,11 +125,12 @@ app.post("/api/cancel", async (req, res) => {
   await redis.del(slotKey(appt.date, appt.time));
   await redis.del(apptKey(id));
   await redis.sRem(ADMIN_ALL_KEY, id);
-  await redis.sRem(phoneIndexKey(appt.phone), id);
+  await redis.sRem(dayIndexKey(appt.date), id);
   res.json({ ok: true });
 });
 
+// פתרון סופי ל-Render Port
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`🚀 Server is booming on port ${PORT}`);
 });
