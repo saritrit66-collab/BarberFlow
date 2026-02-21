@@ -1,0 +1,489 @@
+:root{
+  --text:#fff;
+  --muted:rgba(255,255,255,.78);
+  --border:rgba(255,255,255,.18);
+  --shadow:0 20px 60px rgba(0,0,0,.55);
+  --radius:18px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  color: var(--text);
+  background:#000;
+}
+
+a{ color:inherit; text-decoration:none; }
+
+/* ===== Top bar ===== */
+.topbar{
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 18px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.65), rgba(0,0,0,0));
+}
+
+.brand{
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.hamburger{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border:1px solid var(--border);
+  background: rgba(0,0,0,.25);
+  color: var(--text);
+  cursor:pointer;
+}
+
+.menu{
+  position: fixed;
+  top: 64px;
+  right: 18px;
+  z-index: 60;
+  width: 220px;
+  border:1px solid var(--border);
+  background: rgba(10,10,10,.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+
+.menu a{
+  display:block;
+  padding: 12px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.menu a:last-child{ border-bottom:0; }
+.menu a:hover{ background: rgba(255,255,255,.06); }
+
+/* ===== Hero ===== */
+.hero{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 90px 18px 30px;
+
+  /* שכבת כהה "שקופה" מעל התמונה */
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.65)),
+    url("/barber-hero.jpg") center/cover no-repeat;
+}
+
+.heroInner{
+  max-width: 780px;
+}
+
+.kicker{
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.heroTitle{
+  font-size: clamp(34px, 6vw, 66px);
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+}
+
+.heroSub{
+  margin: 0 auto 22px;
+  max-width: 560px;
+  color: var(--muted);
+  line-height: 3;
+  font-size: 30px;
+}
+
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.45);
+  background: rgba(0,0,0,.22);
+  color: var(--text);
+  font-weight: 800;
+  text-decoration:none;
+  text-transform: uppercase;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+.cta:hover{ background: rgba(255,255,255,.08); }
+
+/* ===== Pages ===== */
+.page{
+  min-height: 100vh;
+  padding: 90px 18px 30px;
+
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
+    url("/barber-hero.jpg") center/cover no-repeat;
+}
+
+.card{
+  max-width: 720px;
+  margin: 0 auto;
+  border:1px solid var(--border);
+  background: rgba(18,18,18,.78);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.h2{
+  margin: 0 0 14px;
+  font-size: 18px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.grid{ display:grid; gap:12px; }
+
+.field label{
+  display:block;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field input, .field select{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  outline:none;
+}
+
+.btn{
+  border:1px solid rgba(255,255,255,.45);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor:pointer;
+}
+.btn:hover{ background: rgba(255,255,255,.14); }
+
+.notice{
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: var(--muted);
+}
+
+.item{
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.25);
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.react-calendar{
+  width: 100%;
+  background: transparent !important;
+  border: 0 !important;
+  color: #fff !important;
+}
+
+.react-calendar__navigation button{
+  color: #fff !important;
+  background: rgba(255,255,255,.06) !important;
+  border-radius: 12px;
+}
+
+.react-calendar__tile{
+  color: #fff !important;
+  border-radius: 12px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus{
+  background: rgba(255,255,255,.12) !important;
+}
+
+.react-calendar__tile--active{
+  background: rgba(255,255,255,.20) !important;
+}
+
+.react-calendar__month-view__weekdays{
+  color: rgba(255,255,255,.7) !important;
+}
+
+/* Popup container for calendar */
+.calPopover{
+  position: absolute;
+  top: 76px;
+  right: 0;
+  z-index: 200;
+  width: 320px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(10,10,10,.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+/* פופאפ של הקלנדר (משמש גם לקוחות וגם ניהול) */
+.cal-pop{
+  position:absolute;
+  top:74px;
+  right:0;
+  z-index:100;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;
+  padding:10px;
+  background: rgba(10,10,10,.72);      /* יותר שקוף */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+
+/* עדינות ללוח שנה */
+.react-calendar{
+  border: 0 !important;
+  background: rgba(255,255,255,0.06) !important; /* שקיפות */
+  color: rgba(255,255,255,0.92);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* כפתורים/ימים */
+.react-calendar__tile{
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255,255,255,0.92);
+}
+
+/* hover עדין */
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus{
+  background: rgba(255,255,255,0.12) !important;
+}
+
+/* היום הנוכחי */
+.react-calendar__tile--now{
+  background: rgba(255,255,255,0.10) !important;
+}
+
+/* יום שנבחר */
+.react-calendar__tile--active{
+  background: rgba(255,255,255,0.20) !important;
+  color: #fff !important;
+}
+
+/* חיצים וכותרת */
+.react-calendar__navigation button{
+  color: rgba(255,255,255,0.9);
+  background: transparent;
+  border-radius: 10px;
+}
+.react-calendar__navigation button:enabled:hover{
+  background: rgba(255,255,255,0.10);
+}
+
+/* === Bigger calendar (לקוחות + ניהול) === */
+.react-calendar {
+  transform: scale(1.25);
+  transform-origin: top right; /* מתאים ל-RTL */
+}
+
+/* שיהיה מקום לסקייל בתוך הפופאפ */
+.cal-pop {
+  padding: 18px !important;
+}
+
+field { overflow: visible; }
+
+.cal-pop{
+  position: absolute;
+  top: 76px;
+  right: 0;
+  z-index: 200;
+
+  width: 560px;
+  max-width: min(560px, 95vw);
+
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 16px;
+  padding: 14px;
+
+  background: rgba(10,10,10,.72);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+
+.cal-pop .react-calendar{
+  width: 100%;
+  border: 0 !important;
+  background: rgba(255,255,255,0.06) !important;
+  color: rgba(255,255,255,0.92) !important;
+  border-radius: 14px;
+  padding: 10px;
+  font-size: 18px; /* הגדלת כתב בלוח */
+}
+
+.cal-pop .react-calendar__navigation button{
+  color: rgba(255,255,255,0.92) !important;
+  background: rgba(255,255,255,.06) !important;
+  border-radius: 12px;
+  font-size: 20px;
+  padding: 10px 12px;
+}
+
+.cal-pop .react-calendar__month-view__weekdays{
+  color: rgba(255,255,255,.7) !important;
+  font-size: 14px;
+}
+
+.cal-pop .react-calendar__tile{
+  height: 58px;      /* הגדלת תאים */
+  border-radius: 14px;
+  font-size: 18px;
+  color: rgba(255,255,255,0.92) !important;
+  background: transparent !important;
+}
+
+.cal-pop .react-calendar__tile:enabled:hover,
+.cal-pop .react-calendar__tile:enabled:focus{
+  background: rgba(255,255,255,0.12) !important;
+}
+
+.cal-pop .react-calendar__tile--now{
+  background: rgba(255,255,255,0.10) !important;
+}
+
+.cal-pop .react-calendar__tile--active{
+  background: rgba(255,255,255,0.20) !important;
+  color: #fff !important;
+}
+
+/* רספונסיבי */
+@media (max-width: 680px){
+  .cal-pop{ width: 95vw; }
+  .cal-pop .react-calendar{ font-size: 16px; }
+  .cal-pop .react-calendar__tile{ height: 50px; font-size: 16px; }
+}
+
+/* =========================
+   BIGGER TEXT (without redesign)
+========================= */
+.h2{ font-size: 24px; }
+.field label{ font-size: 14px; }
+.field input, .field select, .btn{ font-size: 16px; }
+.notice{ font-size: 18px; line-height: 1.9; }
+
+.card{
+  text-align: right;
+  direction: rtl;
+}
+
+.field label{
+  text-align: right;
+}
+
+.field input,
+.field select{
+  text-align: right;
+}
+
+.btn{
+  text-align: center; /* כפתור נשאר באמצע */
+}
+/* ===== WhatsApp floating button ===== */
+
+/* ===== WhatsApp Floating Button ===== */
+
+.whatsapp-float{
+  position: fixed;
+  bottom: 22px;
+  left: 22px;     
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 14px 32px rgba(0,0,0,.5);
+  z-index: 999999;   /* חשוב — מעל הכל */
+  text-decoration: none;
+
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.whatsapp-float:hover{
+  transform: scale(1.1);
+  box-shadow: 0 20px 45px rgba(0,0,0,.7);
+}
+
+.whatsapp-icon{
+  width: 34px;
+  height: 34px;
+}
+/* ===== WhatsApp floating with bubble ===== */
+.wa-float{
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 2147483647; /* הכי גבוה שיש */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.wa-btn{
+  width: 62px;
+  height: 62px;
+  border-radius: 999px;
+  background: #25D366;
+  color: #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 28px;
+  box-shadow: 0 14px 32px rgba(0,0,0,.55);
+}
+
+.wa-bubble{
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(10,10,10,.78);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 14px 32px rgba(0,0,0,.35);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.wa-float:hover .wa-btn{
+  transform: scale(1.06);
+}
