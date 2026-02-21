@@ -13,6 +13,7 @@ export default function App() {
     const code = prompt("הכניסי קוד מנהל:");
     if (code === "1234") {
       localStorage.setItem("admin", "1");
+      // העברה אוטומטית לעמוד הניהול
       window.location.href = "/admin";
     } else {
       alert("קוד שגוי");
