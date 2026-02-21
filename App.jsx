@@ -5,7 +5,7 @@ import BookAppointment from "./BookAppointment.jsx";
 import AdminAppointments from "./AdminAppointments.jsx";
 
 export default function App() {
-  const [open, setOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const WHATSAPP_PHONE = "972522591029";
   const isAdmin = localStorage.getItem("admin") === "1";
 
@@ -13,7 +13,6 @@ export default function App() {
     const code = prompt("הכניסי קוד מנהל:");
     if (code === "1234") {
       localStorage.setItem("admin", "1");
-      // העברה אוטומטית לעמוד הניהול
       window.location.href = "/admin";
     } else {
       alert("קוד שגוי");
@@ -24,11 +23,12 @@ export default function App() {
     <BrowserRouter>
       <div className="topbar">
         <div className="brand">AVIRAN Hair Style</div>
-        <button className="hamburger" onClick={() => setOpen((v) => !v)}>☰</button>
+        {/* שיניתי כאן ל-prev כדי ש-Vite לא יתבלבל */}
+        <button className="hamburger" onClick={() => setIsMenuOpen((prev) => !prev)}>☰</button>
       </div>
 
-      {open && (
-        <div className="menu" onClick={() => setOpen(false)}>
+      {isMenuOpen && (
+        <div className="menu" onClick={() => setIsMenuOpen(false)}>
           <Link to="/">Home</Link>
           <Link to="/book">קבע תור</Link>
           
