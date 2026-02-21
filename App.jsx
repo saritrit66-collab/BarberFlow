@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useState } from "react";
-import Home from "./pages/home.jsx";
-import BookAppointment from "./pages/BookAppointment.jsx";
-import AdminAppointments from "./pages/AdminAppointments.jsx";
+import Home from "./home.jsx";
+import BookAppointment from "./BookAppointment.jsx";
+import AdminAppointments from "./AdminAppointments.jsx";
 
 export default function App() {
   const [open, setOpen] = useState(false);
