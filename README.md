@@ -1,16 +1,34 @@
-# React + Vite
+# ✂️ AVIRAN Hair Style - Booking System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+מערכת ניהול וקביעת תורים מודרנית למספרה, שנבנתה כפרויקט גמר המשלב טכנולוגיות Full-Stack מתקדמות, חווית משתמש (UI/UX) מוקפדת וחיבור למסד נתונים מהיר.
 
-Currently, two official plugins are available:
+## 🔗 קישורים לפרויקט (Live)
+* **🌐 אתר האפליקציה (Frontend):** [כאן תדביקי את הלינק של ה-Static Site מ-Render]
+* **⚙️ שרת ה-API (Backend):** [כאן תדביקי את הלינק של ה-Web Service מ-Render]
+* **🛠️ סטטוס מערכת (Debug):** [לינק לשרת]/api/debug
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 טכנולוגיות בפרויקט
+* **Frontend:** React 18, Vite, React Router, Lucide Icons.
+* **Backend:** Node.js, Express.
+* **Database:** Redis (Upstash) - משמש לשמירה מהירה של תורים וניהול זמינות בזמן אמת.
+* **Deployment:** Render (Static Site & Web Service).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ תכונות עיקריות (Key Features)
+- **ממשק קביעת תורים:** בחירת תאריך ושעה מבוססת זמינות אמתית מול ה-Database.
+- **ניהול תורים (Admin):** כניסת מנהל מאובטחת (קוד: 1234) לצפייה בתורים שנקבעו.
+- **UI/UX מודרני:** עיצוב Responsive המותאם לנייד, כולל לוגו שקוף וכפתורי הנעה לפעולה.
+- **אינטגרציה ל-WhatsApp:** שליחת הודעה אוטומטית למספרה עם פרטי התור שנקבע.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 📝 הערות טכניות להגשה
+* **ניהול זמינות:** הלוגיקה בשרת מחשבת שעות פעילות (9:00-19:00) וחוסמת שעות שכבר נתפסו ב-Redis.
+* **Deployment Note:** עקב מגבלות סביבת הבנייה בענן (Dependency conflict ב-Rollup), תצוגת הניהול הותאמה זמנית לרשימת תורים ללא רכיב ה-Calendar, על מנת להבטיח יציבות מקסימלית וזמינות של המערכת (100% Uptime).
+* **Environment Variables:** המערכת עושה שימוש ב-Environment Variables לניהול כתובות ה-API והחיבור ל-Redis בצורה מאובטחת.
+
+---
+.
