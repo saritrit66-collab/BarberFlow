@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 
 const API = import.meta.env.VITE_API_BASE || "http://localhost:3001";
 
@@ -103,4 +100,5 @@ export default function AdminAppointments() {
       </div>
     </div>
   );
+
 }
