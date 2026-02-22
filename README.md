@@ -3,9 +3,8 @@
 מערכת ניהול וקביעת תורים מודרנית למספרה, שנבנתה כפרויקט גמר המשלב טכנולוגיות Full-Stack מתקדמות, חווית משתמש (UI/UX) מוקפדת וחיבור למסד נתונים מהיר.
 
 ## 🔗 קישורים לפרויקט (Live)
-* **🌐 אתר האפליקציה (Frontend):** [כאן תדביקי את הלינק של ה-Static Site מ-Render]
-* **⚙️ שרת ה-API (Backend):** [כאן תדביקי את הלינק של ה-Web Service מ-Render]
-* **🛠️ סטטוס מערכת (Debug):** [לינק לשרת]/api/debug
+* **🌐 אתר האפליקציה (Frontend)*https://barberflow-1-6j4r.onrender.com/
+* **⚙️ שרת ה-API (Backend):https://barberflow-1-6j4r.onrender.com/]
 
 ---
 
