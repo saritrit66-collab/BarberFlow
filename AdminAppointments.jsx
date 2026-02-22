@@ -7,72 +7,34 @@ export default function AdminAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // משיכת תורים רק כשהתאריך (date) משתנה
   useEffect(() => {
-    if (!date) {
-      setAppointments([]);
-      return;
-    }
-
+    if (!date) return;
     setLoading(true);
     fetch(`${API}/api/admin/appointments?date=${date}`)
       .then((r) => r.json())
-      .then((data) => {
-        setAppointments(data.appointments || []);
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setAppointments([]);
-      })
+      .then((data) => setAppointments(data.appointments || []))
+      .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [date]);
 
   return (
     <div className="card">
-      <h2 className="h2">ניהול תורים לפי תאריך</h2>
-
-      <div className="grid">
-        <div className="field">
-          <label>בחרי תאריך לצפייה בתורים</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            style={{ 
-              textAlign: "right", 
-              padding: "12px", 
-              borderRadius: "8px", 
-              border: "1px solid #ccc",
-              width: "100%",
-              fontSize: "16px"
-            }}
-          />
-        </div>
+      <h2 className="h2">ניהול תורים</h2>
+      <div className="field">
+        <label>בחרי תאריך לצפייה</label>
+        <input 
+          type="date" 
+          value={date} 
+          onChange={(e) => setDate(e.target.value)} 
+        />
       </div>
-
-      <div style={{ marginTop: 25 }}>
-        {loading ? (
-          <div className="notice">מחפש תורים לתאריך {date}...</div>
-        ) : !date ? (
-          <div className="notice" style={{ opacity: 0.6 }}>
-            אנא בחרי תאריך כדי להציג את התורים שנקבעו.
+      <div style={{ marginTop: 20 }}>
+        {loading ? <p>טוען תורים...</p> : appointments.map((a) => (
+          <div key={a.id} className="item">
+            <b>{a.name}</b> | {a.time} | {a.service}
           </div>
-        ) : appointments.length === 0 ? (
-          <div className="notice">אין תורים רשומים לתאריך {date}</div>
-        ) : (
-          <div className="grid">
-            <p style={{ textAlign: "right", fontSize: "14px", color: "#666" }}>
-              נמצאו {appointments.length} תורים לתאריך {date}:
-            </p>
-            {appointments.map((a) => (
-              <div key={a.id} className="item" style={{ borderRight: "4px solid #fff", background: "rgba(255,255,255,0.1)", padding: "15px", marginBottom: "10px", borderRadius: "8px" }}>
-                <div style={{ fontWeight: "bold", fontSize: "1.1rem" }}>{a.name}</div>
-                <div>⏰ שעה: {a.time}</div>
-                <div style={{ opacity: 0.8 }}>📞 טלפון: {a.phone} | 💇 {a.service}</div>
-              </div>
-            ))}
-          </div>
-        )}
+        ))}
+        {date && !loading && appointments.length === 0 && <p>אין תורים לתאריך זה</p>}
       </div>
     </div>
   );
